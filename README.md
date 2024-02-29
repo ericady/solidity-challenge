@@ -1,58 +1,47 @@
-# Smart Contract Challenge
-
-## A) Challenge
-
-### 1) Setup a project and create a contract
-
-#### Summary
-
-ETHPool provides a service where people can deposit ETH and they will receive weekly rewards. Users must be able to take out their deposits along with their portion of rewards at any time. New rewards are deposited manually into the pool by the ETHPool team each week using a contract function.
-
+# 1) Challenge completed
+#### Project config
+- Solidity version 0.8.17
+- Hardhat
+- Typescript
 #### Requirements
-
 - Only the team can deposit rewards.
 - Deposited rewards go to the pool of users, not to individual users.
 - Users should be able to withdraw their deposits along with their share of rewards considering the time when they deposited.
 
-Example:
+All requirements completed.
 
-> Let say we have user **A** and **B** and team **T**.
->
-> **A** deposits 100, and **B** deposits 300 for a total of 400 in the pool. Now **A** has 25% of the pool and **B** has 75%. When **T** deposits 200 rewards, **A** should be able to withdraw 150 and **B** 450.
->
-> What if the following happens? **A** deposits then **T** deposits then **B** deposits then **A** withdraws and finally **B** withdraws.
-> **A** should get their deposit + all the rewards.
-> **B** should only get their deposit because rewards were sent to the pool before they participated.
+# 2) Unit tests
+#### All unit tests passed.
+```
+  ETHPool
+    Team priviledged function
+      ✔ Only owner can set team wallet (49ms)
+      ✔ Only team wallet can deposit rewards
+      ✔ Team should be able to charge rewards after 1 week
+    Stake / Unstake
+      ✔ users should be able to stake eth in the pool
+      ✔ should be able to get pending rewards
+      ✔ should be able to unstake staked balance with rewards
+    More testing scenarios
+      ✔ A stake 100, B stake 300, T deposit 200 rewards => A withdraw 25%, B withdraw 75% rewards (58ms)
+      ✔ A stake 100, T deposit 200 rewards, B stake 300 => A withdraw 100%, B withdraw 0% rewards (58ms)
+      ✔ A stake 100, T deposit 200 rewards, A stake 300 again => A withdraw 100% (58ms)
+      ✔ A stake 100, A stake 300 again, T deposit 200 rewards  => A withdraw 100% (41ms)
+      ✔ A stake 100, B stake 200, A stake 200 again, T deposit 200 rewards  => A withdraw 60%, B withdraw 40% (59ms)
+      ✔ A - 100, B - 300, T - 200 | A - 100, T - 200 | A - 300, B - 100, T - 200  => A rewards 400, B withdraw 200 (86ms)
+```
+#### Code coverage rate
+| File           | % Stmts    | % Branch   | % Funcs    | % Lines    | Uncovered Lines  |
+| -------------- | ---------- | ---------- | ---------- | ---------- | ---------------- |
+| contracts/     | 100        | 91.67      | 100        | 100        |                  |
+| ETHPool.sol    | 100        | 91.67      | 100        | 100        |                  |
+| -------------- | ---------- | ---------- | ---------- | ---------- | ---------------- |
+| All files      | 100        | 91.67      | 100        | 100        |                  |
+| -------------- | ---------- | ---------- | ---------- | ---------- | ---------------- |
 
-#### Goal
+# 3) Deploy contract
+Deployed `ETHPool` contract on goerli testnet and verified.
+Address: [0x9386d6aac111db0229b1106f726acab1dfad7c7d](https://goerli.etherscan.io/address/0x9386d6aac111db0229b1106f726acab1dfad7c7d)
 
-Design and code a contract for ETHPool, take all the assumptions you need to move forward.
-
-You can use any development tools you prefer: Hardhat, Truffle, Brownie, Solidity, Vyper.
-
-Useful resources:
-
-- Solidity Docs: https://docs.soliditylang.org/en/v0.8.4
-- Educational Resource: https://github.com/austintgriffith/scaffold-eth
-- Project Starter: https://github.com/abarmat/solidity-starter
-
-### 2) Write tests
-
-Make sure that all your code is tested properly
-
-### 3) Deploy your contract
-
-Deploy the contract to any Ethereum testnet of your preference. Keep record of the deployed address.
-
-Bonus:
-
-- Verify the contract in Etherscan
-
-### 4) Interact with the contract
-
-Create a script (or a Hardhat task) to query the total amount of ETH held in the contract.
-
-_You can use any library you prefer: Ethers.js, Web3.js, Web3.py, eth-brownie_
-
-### 5) Contact
-If you want to apply to this position, please share your solution to our Solidity Challenge to the following email: jobs@exact.ly
+# 4) Interact with the contract
+ETH Balance fetching script added in 2 ways using `provider.getBalance()` and `ethPool.getETHBalanceOfPool()`.
